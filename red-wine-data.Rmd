@@ -58,7 +58,7 @@ I decided to pick quality for the univariate Analysis.
 source: https://stackoverflow.com/questions/38788357/change-bar-plot-colour-in-geom-bar-with-ggplot2-in-r
 
 ####Plot a histogram 
-```{r echo=FALSE, Univariate - skewed plot}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(x = quality, data = df, binwidth = 1, colour=I("black"), fill = I("lightblue")) +
     scale_x_continuous(breaks = seq(0,10,1), limits = c(0,10))
 
@@ -121,7 +121,7 @@ investigation into your feature(s) of interest?
 
 - I believe that that I am interesting in all the variables such as volatile.acidity, residual.sugar, free.sulfur.dioxide, density, sulphates, fixed acidity, citric-acid, chlorides, pH, and alcohol. 
 
-```{r message = FALSE, warning = FALSE, echo = FALSE, fig.width=20, fig.height=20, grid part 1}
+```{r message = FALSE, warning = FALSE, echo = FALSE, fig.width=20, fig.height=20}
 
 library(grid)
 library(gridExtra)
@@ -179,7 +179,7 @@ source: https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-
 
 I am going to use scatterplots to check the relationship between two variables. 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, packages part 2}}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library('GGally')
 library('scales')
 library('memisc')
@@ -205,6 +205,8 @@ First, I need to double check by adding red line or linear regression to see the
 
 ####I am comparing pH and density.
 
+Density goes down while ph goes up... I am surprized that they are look very different to each other. I expected them to have a positive correlation because they have normal plots. This plot goes to an opposite dirrection.
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 df$quality <- factor(df$quality)
@@ -221,7 +223,7 @@ ggplot(data = df, aes(x = pH, y = density, color = quality))+
 
 ```
 
-
+Comparing ph and citric acid, it goes down.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -238,7 +240,7 @@ ggplot(data = df, aes(x = pH, y = citric.acid, color = quality))+
        title= "ph Vs citric acid")
 ```
 
-Despite that density looks equally similar to pH; it looks different to citric acid ---comparing to pH and citric acid (check my previous plot). 
+Despite that density and Ph are both normal...; it looks different to citric acid ---comparing to pH and citric acid (check my previous plot). 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -255,7 +257,7 @@ ggplot(data = df, aes(x = citric.acid, y = density, color = quality))+
        title= "Citric Acid Vs Density")
 ```
 
-Here is the relationship between fixed acidity and ph. 
+Here is the relationship between fixed acidity and ph. It is falling down slightly. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
  
@@ -272,7 +274,7 @@ ggplot(data = df, aes(x = fixed.acidity, y = pH, color = quality))+
        title= "Fixed Acidity Vs. pH")
 ```
 
-Alright, I am going to compare fixed acidity and citric.acid. They are so connected to each other. 
+Alright, I am going to compare fixed acidity and citric.acid. They are SO connected to each other. Definately a positive one.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -289,7 +291,7 @@ ggplot(data = df, aes(x = fixed.acidity, y = citric.acid, color = quality))+
        title= "Fixed Acidity Vs. Citric Acid")
 ```
 
-Next, I am going to plot volatile.acid and fixed.acidity. 
+Next, I am going to plot volatile.acid and fixed.acidity. It definately feels like it is going down. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 df$quality <- factor(df$quality)
@@ -305,7 +307,7 @@ ggplot(data = df, aes(x = fixed.acidity, y = volatile.acidity, color = quality))
        title= "Fixed Acidity Vs. Volatile Acidity")
 ```
 
-Let's see how it looks like with pH and volatile.acidity. 
+Let's see how it looks like with pH and volatile.acidity. It definiately looks positive because it is escalating. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 df$quality <- factor(df$quality)
@@ -318,10 +320,10 @@ ggplot(data = df, aes(x = pH, y = volatile.acidity, color = quality))+
   theme_dark() +
   labs(x = 'pH', 
        y = 'Volatile Acidity',
-       title= "Fixed Acidity Vs. Volatile Acidity")
+       title= "pH Vs. Volatile Acidity")
 ```
 
-Next, it would volatile.acidity and density:
+Next, I am going to compare volatile.acidity and density...It looks like to me there is slightly increase from this plot.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 df$quality <- factor(df$quality)
@@ -337,10 +339,10 @@ ggplot(data = df, aes(x = density, y = volatile.acidity, color = quality))+
        title= "Density Vs. Volatile Acidity")
 ```
 
-This is how I categorized visually based on my previous plots.  
+This is how I categorized visually based on my previous plots. 
 
 #####Positive correlation: (3 pos)
-density & citric. acidity, citric & fixed acidity, volatile. acidity & and pH. 
+density & citric. acidity, citric & fixed acidity, volatile. acidity &  pH, density & volatile acidity.
 
 #####Negative correlation: (4 neg)
 pH & density, pH & citric acidity, pH & fixed acidity, volatile.acidity & fixed acidity. 
@@ -363,6 +365,18 @@ cor.test(df$pH, df$volatile.acidity, method = 'pearson')
 
 ```
 
+
+Again the negative correlarion by using Pearson method in programming are:
+- ph & density
+- ph & citrict acid
+- ph & fixed acidity
+- fixed acidity & volatile-acidity
+
+The positive correlation would be:
+-ph & volatile
+-density & fixed acidity
+
+-----------------------------------
 -I am going to use ggcorr as an another method to check the relationshipness between two variables. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width= 20, fig.height = 20}
@@ -376,7 +390,7 @@ ggcorr(df,
 
 ```
 
-I guess this method is easier because you can see that the bright red color is indicating the positive relationship between two variables.These indicate the list of strongest relationship.
+I guess this method is easier because you can see that the bright red color is indicating the strongest relationship between two variables.These indicate the list of strongest relationship.
 
 1. Free sulfur dioxide & total sulfur dioxide
 
@@ -384,39 +398,14 @@ I guess this method is easier because you can see that the bright red color is i
 
 3. density & fixed acidity
 
-# Bivariate Analysis
+I always thought that ph and density would be in the list. Turns out that their relationship is not the strongest. I need to keep my eyes on the fixed acidity, 
 
-### Talk about some of the relationships you observed in this part of the \
-##investigation. How did the feature(s) of interest vary with other features in \
-##the dataset?
-
-source: https://www.emathzone.com/tutorials/basic-statistics/positive-and-negative-correlation.html#ixzz5OmFgYWlq
-
-If a correlation goes to the same direction, is called a positive correlation. If one variable increases, the other also increases. If other variable decreases, the other decreases as well. 
-
-If the correlation goes to the oppposite direction, it is called negative correlation. If one variables increases, other should decrease. 
-
-After observing the table, I see two similarity between density and pH. They both have normal looking plot and symetrical.
-
-
-### Did you observe any interesting relationships between the other features \
-###(not the main feature(s) of interest)?
-
-Yes. I did. I have compared the ph, density, citric.accidity, and others variables that might seem to be correlated to each other. 
-
-
-### What was the strongest relationship you found?
-
-The List of the strongest relationship:
-
-1. Free sulfur dioxide & total sulfur dioxide
-
-2. Fixed acidity & Citric Adid
-
-3. density & fixed acidity
 ##### Checking out the boxplots
 
 --> Quality of Wine and other variables in boxplots
+
+This time I am going to explore the data by displaying the scatterplots. My main variable of my interest would be the quality of the wine. I am going to observe the quality of the wine along with all other variables. The question is what makes a red wine a good quality? or what define a good quality of the red wine?
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width= 20, fig.height = 20}
 Q_A<- ggplot(data = df, aes(x= factor(quality), y = alcohol))+
@@ -495,74 +484,245 @@ grid.arrange(Q_A,Q_S,Q_C,Q_FA,Q_VA,Q_P,Q_D,Q_TSD,Q_RS,ncol = 3)
 
 ```
 
+I am going to classify based on the previous observations.All these tiny dots will represent the quality of the wine and remain the same. 
+
+
+1. The quality of the wine gets better if we add more alcohol.
+
+2. I am suprized that we need to add more sulphates to improve the quality of the wine. 
+
+3. The more I add Citric acid, the better quality the wine will be.[This is the one that I need to keep my eyes on this variable.]
+
+4. The wine gets better with slight increase of the fixed acidity.
+
+5. The quality is falling down when the volatile acidity is increased.
+
+6.  The quality of the wine gets better when Ph goes up. 
+
+7. The quality of the wine degrades when density goes up.
+
+8. Total Sulfur dioxids lowers the quality of the wine.
+
+9.Residual sugar does not change the quality of the wine --no matter how much ammount you add sugar. 
+
+
+# Bivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the \
+##investigation. How did the feature(s) of interest vary with other features in \
+##the dataset?
+
+source: https://www.emathzone.com/tutorials/basic-statistics/positive-and-negative-correlation.html#ixzz5OmFgYWlq
+
+After observing the table, I see two similarity between density & citric acid and pH & citrict acid. They both have normal looking (symmetrical) plot. I have expected that these variables may have the strongest relationship. 
+
+After testing each different methods by plotting the variables with red line, in Pearson method of finding correlation, and in spearman correlation method --it turns out that 
+
+-the fixed acidity & density,
+-Free sulfur dioxide & total sulfur dioxide, 
+-and fixed acidity & citric acid 
+
+have the strongest relationship. 
+
+Therefore, my expectation is wrong.  
+
+### Did you observe any interesting relationships between the other features \
+###(not the main feature(s) of interest)?
+
+I have compared the ph, density, citric.accidity, and others variables that might seem to be correlated to each other. 
+
+
+### What was the strongest relationship you found?
+
+The List of the strongest relationship:
+
+1. Free sulfur dioxide & total sulfur dioxide
+
+2. Fixed acidity & Citric Adid
+
+3. density & fixed acidity
+
 --------------------------------
 # Multivariate Plots Section
 
-> **Tip**: Now it's time to put everything together. Based on what you found in
-the bivariate plots section, create a few multivariate plots to investigate
-more complex interactions between variables. Make sure that the plots that you
-create here are justified by the plots you explored in the previous section. If
-you plan on creating any mathematical models, this is the section where you
-will do that.
 
-```{r echo=FALSE, Multivariate_Plots}
+```{r echo=FALSE,message=FALSE, warning=FALSE, Multivariate_Plots}
+library(ggthemes)
+library(reshape2)
+library(RColorBrewer)
 
 ```
 
 # Multivariate Analysis
 
 ### Talk about some of the relationships you observed in this part of the \
-investigation. Were there features that strengthened each other in terms of \
-looking at your feature(s) of interest?
+###investigation. Were there features that strengthened each other in terms of \
+###looking at your feature(s) of interest?
+
+During my investigation, the variables that i have been observing would be density, alcohol, sulphates and quality of the wine. 
+
+According to my previous investigation, I am already aware that adding more alcohol would improve the quality of the wine. I am going to attempt to correlate with density (--a slight increase of the density would makes the quality of the wine worse). Because I am curious. I want to check the relationship between the density, alcohol, and quality. 
+
+We could conclude that adding less density, more alcohol could improve the overall the quality of the wine. There is no contradiction from the Bivariate examination. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = df, aes(y = density, x = alcohol, color = quality)) +
+  geom_point() +
+  scale_fill_gradient(low="lightblue",high="darkgreen")+
+  geom_smooth(method = 'lm',color = 'red')
+
+```
+
+
+Next one looks like a positive correlation...It means that the slight of the increase of the sulphites and alcohol could make better quality. THerefore, there is no contradiction.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = df,
+       aes(y = sulphates, x = alcohol,
+           color = quality)) +
+  geom_point() +
+  scale_y_continuous(limits=c(0.3,1.5)) +
+  scale_fill_gradient(low="lightblue",high="darkgreen")+
+  geom_smooth(method = 'lm',color = 'red')
+```
+
+I am going to use another method and perform logistic method to check the numbers. This time, I decided to seperate the quality by using facet_wrap because ...I am curious how it looks when the quality are seperated.
+
+Previously at the bivariate experimentation, the relationship between the sulphates and quality are considered positive. However, adding alcohol as a third variable change everythhing. Turns out that the relationship between three variables like sulphates, alcohol, and quality are tiny bit negative. Actually, that does not convince me that the sulphates is making worse. I move on. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = df,
+       aes(y = sulphates, x = alcohol,
+           color = quality)) +
+  geom_point(alpha = 0.8, size = 1) +
+  geom_smooth(method = "lm", se = FALSE,size=1)  +
+  scale_y_continuous(limits=c(0.0,2)) +
+  facet_wrap (~quality)+
+  scale_color_brewer(palette = "Greens", type='seq',
+                   guide=guide_legend(title='Quality'))+
+  scale_y_log10()
+
+```
+
+Previously from the bivariate experiementation with the quality and citric acid. The quality from 3, 4, 6, and 8 would make a huge contradiction. I guess I am going to use another method to re-examine the relationship. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = df,
+       aes(y = citric.acid, x = alcohol,
+           color = quality)) +
+  geom_point(alpha = 0.8, size = 1) +
+  geom_smooth(method = "lm", se = FALSE,size=1)  +
+  scale_y_continuous(limits=c(0.0,2)) +
+  facet_wrap (~quality)+
+  scale_color_brewer(palette = "Greens", type='seq',
+                   guide=guide_legend(title='Quality'))+
+  scale_y_log10()
+```
+
+I have picked the variables the ones that had strong relationship from the bivariate experimentation. I choose fixed acidity, citric acid, and quality. These plots definately show a correlation. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = df,
+       aes(y = citric.acid, x = fixed.acidity,
+           color = quality)) +
+  geom_point(alpha = 0.8, size = 1) +
+  geom_smooth(method = "lm", se = FALSE,size=1)  +
+  scale_y_continuous(limits=c(0.0,2)) +
+  facet_wrap (~quality)+
+  scale_color_brewer(palette = "Greens", type='seq',
+                   guide=guide_legend(title='Quality'))+
+  scale_y_log10()
+```
+
+I am going to attempt to check the linear models to make some prediction. 
+
+source: https://stat.ethz.ch/R-manual/R-patched/library/base/html/numeric.html
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+
+#Model Linear for quality 
+
+m1 <- lm(as.numeric(quality) ~ alcohol, data = df)
+m2 <- update(m1, ~ . + pH)
+m3 <- update(m2, ~ . + citric.acid )
+m4 <- update(m3, ~ . + volatile.acidity)
+m5 <- update(m4, ~ . + fixed.acidity)
+m6 <- update(m2, ~ . + sulphates)
+
+mtable(m1, m2, m3, m4, m5, sdigits = 3)
+```
+
+According to my observation, if I check the result of the r-square and intercept. I find out that alcohol + pH + citric.acid + 
+volatile.acidity make a great wine quality. However, alcohol + pH + citric.acid is degrading. I believe that adding the citric acid is the cause of dimininshing the quality of the wine.
 
 ### Were there any interesting or surprising interactions between features?
 
-### OPTIONAL: Did you create any models with your dataset? Discuss the \
-strengths and limitations of your model.
+Just like I was expected that the multivariate would have different results from univariate or bivariate examination. I am suprised that I find out something that contradicts from my bivariate investigation. Sometimes, you might remind yourself that Simpson paradox is everywhere. I learned my lesson that I need to further the experimentation to verify again the relationship in the multivariate experiment.   
 
+### OPTIONAL:  Did you create any models with your dataset? Discuss the \
+##strengths and limitations of your model.
+
+I made a linear models to check the result in numbers instead of the plots. The strenght is that I find it easier to read the numbers on the table than plots. We know what causes the increase and decrease of the wine quality. The limitation of my model is that is hard to predict what makes bad and good quality. Also, all my p-values are all 0... meaning it is harder to interpret the confident interval in this experimentation.(I am 0% confident...)
 ------
 
 # Final Plots and Summary
-
-> **Tip**: You've done a lot of exploration and have built up an understanding
-of the structure of and relationships between the variables in your dataset.
-Here, you will select three plots from all of your previous exploration to
-present here as a summary of some of your most interesting findings. Make sure
-that you have refined your selected plots for good titling, axis labels (with
-units), and good aesthetic choices (e.g. color, transparency). After each plot,
-make sure you justify why you chose each plot by describing what it shows.
+Here are my three I like and find helpful to understand what makes a good and bad quality of the wine. 
 
 ### Plot One
 ```{r echo=FALSE, Plot_One}
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 3)  
 
 ```
 
 ### Description One
 
+The main reason why I pick this plot because it helps me to observe the single variable histograms very quickly. I could easily categorize which one is a normal distribution.  
+
+Again , I concluded that combining with citric acid dimish the quality of the wine with alcohol. 
+
+There are two things we might need to re-observe is the citric acid and alcohol. Both have long looking negative skewed plots. I was wrong to pressume that the alcohol and citric acid could make the wine better because of their similariy.  
+
 
 ### Plot Two
-```{r echo=FALSE, Plot_Two}
-
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width= 20, fig.height = 20}
+ggcorr(df,
+       method= c("all.obs", "spearman"),
+       nbreaks = 4, label = TRUE,
+       name = "Spearman Correlation Coeff Matrix",
+       hjust= 0.8, angle = -70, size = 5)+
+  ggtitle("Spearman Correlation coefficient Matrix")
 ```
 
 ### Description Two
 
+The target is to check the correlation between two variables. Labeling with colors and numbers are really quick way to check what the relationships. For example, the red color indicated that the two variables have strong relationship. 
+
+Let's rexamine the citric acid and alcohol. We could get an idea that it has a slight correlation of 0.1. (not too strong or low)
 
 ### Plot Three
-```{r echo=FALSE, Plot_Three}
-
+```{r echo=FALSE,message=FALSE, Plot_Three}
+ggplot(data = df,
+       aes(y = citric.acid, x = alcohol,
+           color = quality)) +
+  geom_point(alpha = 0.8, size = 1) +
+  geom_smooth(method = "lm", se = FALSE,size=1)  +
+  scale_y_continuous(limits=c(0.0,2)) +
+  facet_wrap (~quality)+
+  scale_color_brewer(palette = "Greens", type='seq',
+                   guide=guide_legend(title='Quality'))+
+  scale_y_log10()
 ```
 
 ### Description Three
 
-------
-
+I choose this one because I want to point out how citric acid , alcohol, and quality are very different when we examine in multivariate experimentation. I clearly see that the quality 6 and 7 are in slightly better. Overall, that does not convince me that the citric acid is making a better quality because most of the report from quality 3,4,5, and 8 indicate that the wine got worse. 
 # Reflection
 
-> **Tip**: Here's the final step! Reflect on the exploration you performed and
-the insights you found. What were some of the struggles that you went through?
-What went well? What was surprising? Make sure you include an insight into
-future work that could be done with the dataset.
+At first, I have concluded that adding more citric acid in wine would improve the quality of the wine. I was not sure if I should conclude that citric acid is one that is decreasing of the quality because majority of the plots with citric acid skewed positively.
 
-> **Tip**: Don't forget to remove this, and the other **Tip** sections before
-saving your final work and knitting the final report!
+As I continue the research and use the linear model, my view about the citric acid, alcohol and quality has changed. Citric acid is definately diminishing the quality of the wine with alcohol. 
+
+I have suspected since in the begining that there is some Simpson paradox moment going on during the examination. As I progress, I kept being skeptical about what I saw. I started to understand that I have to further the research from univariate, bivariate, and multivariate to examine the differences of the variables relationship. It is almost like having one child in the family can affect two parents's life. I find it really facinating.I would suggest to re-examine again other variables beside alcohol and quality in multivariate examination. 
+
+To improve the research, I would love to interpret the confidence interval and have the numbers in the p-values. I think the research would be strong and convincinble if I include "I am 95% confident... "
+
+
