@@ -1,9 +1,19 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 RED WINE DATA by Paula Hwang 
 ========================================================
 
 This report explores a dataset containing quality and attributes for approximately 1600 wines.
 
+#Loading the csv file
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+
+knitr::opts_chunk$set(fig.width=9,fig.height=5,fig.path='Figs/',
+                      fig.align='center',tidy=TRUE,
+                      echo=FALSE,warning=FALSE,message=FALSE)
 getwd()
 setwd('C:\\Users\\Alexander Smith\\Desktop\\wine-data')
 
@@ -15,19 +25,19 @@ library(ggplot2)
 Our dataset consists of 13 variables, with almost 1599 observations.
 
 ####Display variables and observations
-```{r echo=FALSE, Load_the_Data}
+```{r echo=FALSE,warning=FALSE,message=FALSE, Load_the_Data}
 # Load the Data
 dim(df)
 ```
 
 ####Display the summary of the data
-```{r echo=FALSE, Load_the_summary1}
+```{r echo=FALSE,warning=FALSE,message=FALSE, Load_the_summary1}
 # Load the Data
 str(df)
 ```
 
 ####Display a summary another way
-```{r echo=FALSE, Load_the_summary2}
+```{r echo=FALSE,warning=FALSE,message=FALSE, Load_the_summary2}
 summary(df)
 ```
 
@@ -71,7 +81,7 @@ Because my plot looks slightly skewed, I plan to transform it into a normal dist
 ***B)** This is my attempt of using sqrt to transform into a normal distribution. It looks slightly normal.
 
 ####Plot the histogram by adding scale_y_sqrt()
-```{r Univariate-sqrt-normal-distribution, echo=FALSE}
+```{r echo=FALSE,warning=FALSE,message=FALSE, Load_Data}
 qplot(x = quality, data = df, binwidth = 1,colour=I("black"), fill = I("lightblue")) +
     scale_x_continuous(breaks = seq(0,10,1), limits = c(0,10))+
     scale_y_sqrt()
@@ -107,8 +117,8 @@ For more information, read [Cortez et al., 2009].
    Output variable (based on sensory data): 
    12 - quality (score between 0 and 10)
 
-####Diaplay the dimmensions of an Object like in the begining
-```{r echo=FALSE, dataset}
+####Display the dimmensions of an Object like in the begining
+```{r echo=FALSE,warning=FALSE,message=FALSE, dataset}
 dim(df)
 ```
 
@@ -120,8 +130,8 @@ dim(df)
 investigation into your feature(s) of interest?
 
 - I believe that that I am interesting in all the variables such as volatile.acidity, residual.sugar, free.sulfur.dioxide, density, sulphates, fixed acidity, citric-acid, chlorides, pH, and alcohol. 
-
-```{r message = FALSE, warning = FALSE, echo = FALSE, fig.width=20, fig.height=20}
+###Plotting each variable in histogram in univariate experimentation way
+```{r message = FALSE, warning = FALSE, echo = FALSE, fig.height=7, fig.width=9}
 
 library(grid)
 library(gridExtra)
@@ -179,6 +189,7 @@ source: https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-
 
 I am going to use scatterplots to check the relationship between two variables. 
 
+#loading the libraries 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library('GGally')
 library('scales')
@@ -207,11 +218,12 @@ First, I need to double check by adding red line or linear regression to see the
 
 Density goes down while ph goes up... I am surprized that they are look very different to each other. I expected them to have a positive correlation because they have normal plots. This plot goes to an opposite dirrection.
 
+#Create a scatterplors to check two variables: ph and density
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = pH, y = density, color = quality))+
+ggplot(data = df, aes(x = pH, y = density))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.985, 1.0))+
   scale_color_brewer(type= 'seq')+
@@ -225,11 +237,12 @@ ggplot(data = df, aes(x = pH, y = density, color = quality))+
 
 Comparing ph and citric acid, it goes down.
 
+#Create a scatterplots between citric acid and pH
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = pH, y = citric.acid, color = quality))+
+ggplot(data = df, aes(x = pH, y = citric.acid))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.0, 1.0))+
   scale_color_brewer(type= 'seq')+
@@ -242,11 +255,12 @@ ggplot(data = df, aes(x = pH, y = citric.acid, color = quality))+
 
 Despite that density and Ph are both normal...; it looks different to citric acid ---comparing to pH and citric acid (check my previous plot). 
 
+#Create a scatterplots between citric acid and density
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = citric.acid, y = density, color = quality))+
+ggplot(data = df, aes(x = citric.acid, y = density))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.985, 1.02))+
   scale_color_brewer(type= 'seq')+
@@ -259,11 +273,12 @@ ggplot(data = df, aes(x = citric.acid, y = density, color = quality))+
 
 Here is the relationship between fixed acidity and ph. It is falling down slightly. 
 
+#Create a scatterplots between ph and fixed acidity
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
  
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = fixed.acidity, y = pH, color = quality))+
+ggplot(data = df, aes(x = fixed.acidity, y = pH))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.5, 5))+
   scale_color_brewer(type= 'seq')+
@@ -276,11 +291,12 @@ ggplot(data = df, aes(x = fixed.acidity, y = pH, color = quality))+
 
 Alright, I am going to compare fixed acidity and citric.acid. They are SO connected to each other. Definately a positive one.
 
+#Create a scatterplots between citric acid and fixed acidity
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = fixed.acidity, y = citric.acid, color = quality))+
+ggplot(data = df, aes(x = fixed.acidity, y = citric.acid))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.0, 1))+
   scale_color_brewer(type= 'seq')+
@@ -293,10 +309,12 @@ ggplot(data = df, aes(x = fixed.acidity, y = citric.acid, color = quality))+
 
 Next, I am going to plot volatile.acid and fixed.acidity. It definately feels like it is going down. 
 
+
+#Create a scatterplots between fixed acidity and volatile acidity
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = fixed.acidity, y = volatile.acidity, color = quality))+
+ggplot(data = df, aes(x = fixed.acidity, y = volatile.acidity ))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.0, 1))+
   scale_color_brewer(type= 'seq')+
@@ -309,10 +327,11 @@ ggplot(data = df, aes(x = fixed.acidity, y = volatile.acidity, color = quality))
 
 Let's see how it looks like with pH and volatile.acidity. It definiately looks positive because it is escalating. 
 
+#Create a scatterplots between ph and volatile acidity
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = pH, y = volatile.acidity, color = quality))+
+ggplot(data = df, aes(x = pH, y = volatile.acidity))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.0, 1))+
   scale_color_brewer(type= 'seq')+
@@ -325,10 +344,11 @@ ggplot(data = df, aes(x = pH, y = volatile.acidity, color = quality))+
 
 Next, I am going to compare volatile.acidity and density...It looks like to me there is slightly increase from this plot.
 
+# #Create a scatterplots between density and volatile acidity
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 df$quality <- factor(df$quality)
 
-ggplot(data = df, aes(x = density, y = volatile.acidity, color = quality))+
+ggplot(data = df, aes(x = density, y = volatile.acidity))+
   geom_jitter()+
   coord_cartesian(ylim = c(0.0, 1))+
   scale_color_brewer(type= 'seq')+
@@ -351,6 +371,7 @@ pH & density, pH & citric acidity, pH & fixed acidity, volatile.acidity & fixed 
 
 Another way to verify if they are negative or positive correlation. I am using a cor.test in programming. 
 
+#Check the correlation between two varriables and categorize them between negative and postive
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #negative:
 cor.test(df$pH, df$density, method = 'pearson')
@@ -379,6 +400,7 @@ The positive correlation would be:
 -----------------------------------
 -I am going to use ggcorr as an another method to check the relationshipness between two variables. 
 
+#create another correlation table to check the relationship between two variables
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width= 20, fig.height = 20}
 
 ggcorr(df,
@@ -406,7 +428,7 @@ I always thought that ph and density would be in the list. Turns out that their 
 
 This time I am going to explore the data by displaying the scatterplots. My main variable of my interest would be the quality of the wine. I am going to observe the quality of the wine along with all other variables. The question is what makes a red wine a good quality? or what define a good quality of the red wine?
 
-
+#Now create the boxplots for each variables + quality 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width= 20, fig.height = 20}
 Q_A<- ggplot(data = df, aes(x= factor(quality), y = alcohol))+
   geom_jitter(alpha = 1/10)+
@@ -477,7 +499,7 @@ Q_RS <- ggplot(data = df, aes(x= factor(quality), y = df$residual.sugar))+
   geom_boxplot(alpha = 1/10, color = 'blue')+
   stat_summary(fun.y = 'mean', geom = 'point', color = 'red')+
   labs(x = 'Quality (score between 3 and 9)',
-       y = 'residual sugar (g / dm^3)',
+       y = 'Residual~Sugar~(g/dm^3)',
        title = 'Boxplot of residual sugar across qualities')
 
 grid.arrange(Q_A,Q_S,Q_C,Q_FA,Q_VA,Q_P,Q_D,Q_TSD,Q_RS,ncol = 3)
@@ -545,7 +567,7 @@ The List of the strongest relationship:
 --------------------------------
 # Multivariate Plots Section
 
-
+#Load another tables
 ```{r echo=FALSE,message=FALSE, warning=FALSE, Multivariate_Plots}
 library(ggthemes)
 library(reshape2)
@@ -565,6 +587,7 @@ According to my previous investigation, I am already aware that adding more alco
 
 We could conclude that adding less density, more alcohol could improve the overall the quality of the wine. There is no contradiction from the Bivariate examination. 
 
+#Create scatterplots with colored variable
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(data = df, aes(y = density, x = alcohol, color = quality)) +
   geom_point() +
@@ -576,6 +599,7 @@ ggplot(data = df, aes(y = density, x = alcohol, color = quality)) +
 
 Next one looks like a positive correlation...It means that the slight of the increase of the sulphites and alcohol could make better quality. THerefore, there is no contradiction.
 
+#Create scatterplots with colored variable
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(data = df,
        aes(y = sulphates, x = alcohol,
@@ -590,6 +614,7 @@ I am going to use another method and perform logistic method to check the number
 
 Previously at the bivariate experimentation, the relationship between the sulphates and quality are considered positive. However, adding alcohol as a third variable change everythhing. Turns out that the relationship between three variables like sulphates, alcohol, and quality are tiny bit negative. Actually, that does not convince me that the sulphates is making worse. I move on. 
 
+#Create scatterplots and separate each qualities with facet_wrap
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(data = df,
        aes(y = sulphates, x = alcohol,
@@ -606,6 +631,7 @@ ggplot(data = df,
 
 Previously from the bivariate experiementation with the quality and citric acid. The quality from 3, 4, 6, and 8 would make a huge contradiction. I guess I am going to use another method to re-examine the relationship. 
 
+#Create scatterplots and separate each qualities with facet_wrap
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(data = df,
        aes(y = citric.acid, x = alcohol,
@@ -621,6 +647,7 @@ ggplot(data = df,
 
 I have picked the variables the ones that had strong relationship from the bivariate experimentation. I choose fixed acidity, citric acid, and quality. These plots definately show a correlation. 
 
+#Create scatterplots and separate each qualities with facet_wrap
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(data = df,
        aes(y = citric.acid, x = fixed.acidity,
@@ -662,13 +689,12 @@ Just like I was expected that the multivariate would have different results from
 ##strengths and limitations of your model.
 
 I made a linear models to check the result in numbers instead of the plots. The strenght is that I find it easier to read the numbers on the table than plots. We know what causes the increase and decrease of the wine quality. The limitation of my model is that is hard to predict what makes bad and good quality. Also, all my p-values are all 0... meaning it is harder to interpret the confident interval in this experimentation.(I am 0% confident...)
-------
 
 # Final Plots and Summary
 Here are my three I like and find helpful to understand what makes a good and bad quality of the wine. 
 
 ### Plot One
-```{r echo=FALSE, Plot_One}
+```{r echo=FALSE, message=FALSE, warning=FALSE, Plot_One}
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 3)  
 
 ```
@@ -683,23 +709,26 @@ There are two things we might need to re-observe is the citric acid and alcohol.
 
 
 ### Plot Two
-```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width= 20, fig.height = 20}
-ggcorr(df,
-       method= c("all.obs", "spearman"),
-       nbreaks = 4, label = TRUE,
-       name = "Spearman Correlation Coeff Matrix",
-       hjust= 0.8, angle = -70, size = 5)+
-  ggtitle("Spearman Correlation coefficient Matrix")
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(data = df, aes(x = pH, y = citric.acid))+
+  geom_jitter()+
+  coord_cartesian(ylim = c(0.0, 1.0))+
+  scale_color_brewer(type= 'seq')+
+  geom_smooth(method = 'lm',color = 'red')+
+  theme_dark() +
+  labs(x = 'pH', 
+       y = 'citric acid',
+       title= "ph Vs citric acid")
 ```
 
 ### Description Two
 
 The target is to check the correlation between two variables. Labeling with colors and numbers are really quick way to check what the relationships. For example, the red color indicated that the two variables have strong relationship. 
 
-Let's rexamine the citric acid and alcohol. We could get an idea that it has a slight correlation of 0.1. (not too strong or low)
+Let's rexamine the citric acid and pH. We should keep eyes the relationship of citrid acid with other variable such as ph.
 
 ### Plot Three
-```{r echo=FALSE,message=FALSE, Plot_Three}
+```{r echo=FALSE,warning=FALSE,message=FALSE, Plot_Three}
 ggplot(data = df,
        aes(y = citric.acid, x = alcohol,
            color = quality)) +

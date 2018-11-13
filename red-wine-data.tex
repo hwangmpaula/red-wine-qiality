@@ -1,0 +1,879 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+
+\section{RED WINE DATA by Paula
+Hwang}\label{red-wine-data-by-paula-hwang}
+
+This report explores a dataset containing quality and attributes for
+approximately 1600 wines.
+
+\begin{verbatim}
+## [1] "C:/Users/Alexander Smith/Desktop/wine-data"
+\end{verbatim}
+
+Our dataset consists of 13 variables, with almost 1599 observations.
+
+\paragraph{Display variables and
+observations}\label{display-variables-and-observations}
+
+\begin{verbatim}
+## [1] 1599   13
+\end{verbatim}
+
+\paragraph{Display the summary of the
+data}\label{display-the-summary-of-the-data}
+
+\begin{verbatim}
+## 'data.frame':    1599 obs. of  13 variables:
+##  $ X                   : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ fixed.acidity       : num  7.4 7.8 7.8 11.2 7.4 7.4 7.9 7.3 7.8 7.5 ...
+##  $ volatile.acidity    : num  0.7 0.88 0.76 0.28 0.7 0.66 0.6 0.65 0.58 0.5 ...
+##  $ citric.acid         : num  0 0 0.04 0.56 0 0 0.06 0 0.02 0.36 ...
+##  $ residual.sugar      : num  1.9 2.6 2.3 1.9 1.9 1.8 1.6 1.2 2 6.1 ...
+##  $ chlorides           : num  0.076 0.098 0.092 0.075 0.076 0.075 0.069 0.065 0.073 0.071 ...
+##  $ free.sulfur.dioxide : num  11 25 15 17 11 13 15 15 9 17 ...
+##  $ total.sulfur.dioxide: num  34 67 54 60 34 40 59 21 18 102 ...
+##  $ density             : num  0.998 0.997 0.997 0.998 0.998 ...
+##  $ pH                  : num  3.51 3.2 3.26 3.16 3.51 3.51 3.3 3.39 3.36 3.35 ...
+##  $ sulphates           : num  0.56 0.68 0.65 0.58 0.56 0.56 0.46 0.47 0.57 0.8 ...
+##  $ alcohol             : num  9.4 9.8 9.8 9.8 9.4 9.4 9.4 10 9.5 10.5 ...
+##  $ quality             : int  5 5 5 6 5 5 5 7 7 5 ...
+\end{verbatim}
+
+\paragraph{Display a summary another
+way}\label{display-a-summary-another-way}
+
+\begin{verbatim}
+##        X          fixed.acidity   volatile.acidity  citric.acid   
+##  Min.   :   1.0   Min.   : 4.60   Min.   :0.1200   Min.   :0.000  
+##  1st Qu.: 400.5   1st Qu.: 7.10   1st Qu.:0.3900   1st Qu.:0.090  
+##  Median : 800.0   Median : 7.90   Median :0.5200   Median :0.260  
+##  Mean   : 800.0   Mean   : 8.32   Mean   :0.5278   Mean   :0.271  
+##  3rd Qu.:1199.5   3rd Qu.: 9.20   3rd Qu.:0.6400   3rd Qu.:0.420  
+##  Max.   :1599.0   Max.   :15.90   Max.   :1.5800   Max.   :1.000  
+##  residual.sugar     chlorides       free.sulfur.dioxide
+##  Min.   : 0.900   Min.   :0.01200   Min.   : 1.00      
+##  1st Qu.: 1.900   1st Qu.:0.07000   1st Qu.: 7.00      
+##  Median : 2.200   Median :0.07900   Median :14.00      
+##  Mean   : 2.539   Mean   :0.08747   Mean   :15.87      
+##  3rd Qu.: 2.600   3rd Qu.:0.09000   3rd Qu.:21.00      
+##  Max.   :15.500   Max.   :0.61100   Max.   :72.00      
+##  total.sulfur.dioxide    density             pH          sulphates     
+##  Min.   :  6.00       Min.   :0.9901   Min.   :2.740   Min.   :0.3300  
+##  1st Qu.: 22.00       1st Qu.:0.9956   1st Qu.:3.210   1st Qu.:0.5500  
+##  Median : 38.00       Median :0.9968   Median :3.310   Median :0.6200  
+##  Mean   : 46.47       Mean   :0.9967   Mean   :3.311   Mean   :0.6581  
+##  3rd Qu.: 62.00       3rd Qu.:0.9978   3rd Qu.:3.400   3rd Qu.:0.7300  
+##  Max.   :289.00       Max.   :1.0037   Max.   :4.010   Max.   :2.0000  
+##     alcohol         quality     
+##  Min.   : 8.40   Min.   :3.000  
+##  1st Qu.: 9.50   1st Qu.:5.000  
+##  Median :10.20   Median :6.000  
+##  Mean   :10.42   Mean   :5.636  
+##  3rd Qu.:11.10   3rd Qu.:6.000  
+##  Max.   :14.90   Max.   :8.000
+\end{verbatim}
+
+\section{Univariate Plots Section}\label{univariate-plots-section}
+
+\begin{quote}
+\textbf{Tip}: In this section, you should perform some preliminary
+exploration of your dataset. Run some summaries of the data and create
+univariate plots to understand the structure of the individual variables
+in your dataset. Don't forget to add a comment after each plot or
+closely-related group of plots! There should be multiple code chunks and
+text sections; the first one below is just to help you get started.
+\end{quote}
+
+\begin{quote}
+\textbf{Tip}: Make sure that you leave a blank line between the start /
+end of each code block and the end / start of your Markdown text so that
+it is formatted nicely in the knitted text. Note as well that text on
+consecutive lines is treated as a single space. Make sure you have a
+blank line between your paragraphs so that they too are formatted for
+easy readability.
+\end{quote}
+
+\section{Univariate Analysis}\label{univariate-analysis}
+
+*\textbf{A} First, I made a plot to find out what it looks like as a
+plot. I decided to pick quality for the univariate Analysis.
+
+source:
+\url{https://stackoverflow.com/questions/38788357/change-bar-plot-colour-in-geom-bar-with-ggplot2-in-r}
+
+\paragraph{Plot a histogram}\label{plot-a-histogram}
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+Because my plot looks slightly skewed, I plan to transform it into a
+normal distribution. I have two options: sqrt or log.
+
+*source:
+\url{https://stats.stackexchange.com/questions/74537/log-or-square-root-transformation-for-arima}
+
+*\textbf{B)} This is my attempt of using sqrt to transform into a normal
+distribution. It looks slightly normal.
+
+\paragraph{Plot the histogram by adding
+scale\_y\_sqrt()}\label{plot-the-histogram-by-adding-scale_y_sqrt}
+
+\includegraphics{red-wine-data_files/figure-latex/Univariate-sqrt-normal-distribution-1.pdf}
+
+*\textbf{C} This is my attempt of using log10 to transform into a normal
+distribution. It looks like a perfect normal distribution.
+
+\paragraph{Plot a histogram with
+log10}\label{plot-a-histogram-with-log10}
+
+\includegraphics{red-wine-data_files/figure-latex/Univariate-log10-normal-distribution-1.pdf}
+
+\subsubsection{What is the structure of your
+dataset?}\label{what-is-the-structure-of-your-dataset}
+
+\begin{itemize}
+\tightlist
+\item
+  Our dataset consists of 13 variables, with almost 1599 observations.
+\end{itemize}
+
+For more information, read {[}Cortez et al., 2009{]}.
+
+Input variables (based on physicochemical tests): 1 - fixed acidity
+(tartaric acid - g / dm\^{}3) 2 - volatile acidity (acetic acid - g /
+dm\^{}3) 3 - citric acid (g / dm\^{}3) 4 - residual sugar (g / dm\^{}3)
+5 - chlorides (sodium chloride - g / dm\^{}3 6 - free sulfur dioxide (mg
+/ dm\^{}3) 7 - total sulfur dioxide (mg / dm\^{}3) 8 - density (g /
+cm\^{}3) 9 - pH 10 - sulphates (potassium sulphate - g / dm3) 11 -
+alcohol (\% by volume) Output variable (based on sensory data): 12 -
+quality (score between 0 and 10)
+
+\paragraph{Diaplay the dimmensions of an Object like in the
+begining}\label{diaplay-the-dimmensions-of-an-object-like-in-the-begining}
+
+\begin{verbatim}
+## [1] 1599   13
+\end{verbatim}
+
+\subsubsection{What is/are the main feature(s) of interest in your
+dataset?}\label{what-isare-the-main-features-of-interest-in-your-dataset}
+
+\begin{itemize}
+\tightlist
+\item
+  My main feature of interest is the quality of the wine.
+\end{itemize}
+
+\subsubsection{\texorpdfstring{What other features in the dataset do you
+think will help support your\\
+investigation into your feature(s) of
+interest?}{What other features in the dataset do you think will help support your investigation into your feature(s) of interest?}}\label{what-other-features-in-the-dataset-do-you-think-will-help-support-your-investigation-into-your-features-of-interest}
+
+\begin{itemize}
+\tightlist
+\item
+  I believe that that I am interesting in all the variables such as
+  volatile.acidity, residual.sugar, free.sulfur.dioxide, density,
+  sulphates, fixed acidity, citric-acid, chlorides, pH, and alcohol.
+\end{itemize}
+
+\begin{verbatim}
+## <ScaleContinuousPosition>
+##  Range:  
+##  Limits:    0 --    1
+\end{verbatim}
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\subparagraph{Here I have categorized each
+plots}\label{here-i-have-categorized-each-plots}
+
+\begin{itemize}
+\item
+  Right-Skewed: alcohol, citric acid, sulphates, Free sulfur dioxide,
+  Fixed acidity, Total sulfur, chlorides
+\item
+  Symetric: density, PH, volatile.acidity, fixed acidity
+\end{itemize}
+
+\subsubsection{Did you create any new variables from existing variables
+in the
+dataset?}\label{did-you-create-any-new-variables-from-existing-variables-in-the-dataset}
+
+Yes, I did create new variables to assembled all the plots in one box to
+faciliate my observations.
+
+\subsubsection{\texorpdfstring{Of the features you investigated, were
+there any unusual distributions?\\
+\#\#\#Did you perform any operations on the data to tidy, adjust, or
+change the form\\
+\#\#\#of the data? If so, why did you do
+this?}{Of the features you investigated, were there any unusual distributions? \#\#\#Did you perform any operations on the data to tidy, adjust, or change the form \#\#\#of the data? If so, why did you do this?}}\label{of-the-features-you-investigated-were-there-any-unusual-distributions-did-you-perform-any-operations-on-the-data-to-tidy-adjust-or-change-the-form-of-the-data-if-so-why-did-you-do-this}
+
+I used the log10 or squrt by transforming my plots into a normal
+distribution. I am going to quote from r-statistics.com to explain why I
+made them normal. ``The need for data transformation can depend on the
+modeling method that you plan to use. For linear and logistic
+regression, for example, you ideally want to make sure that the
+relationship between input variables and output variables is
+approximately linear, that the input variables are approximately normal
+in distribution, and that the output variable is constant variance (that
+is, the variance of the output variable is independent of the input
+variables). You may need to transform some of your input variables to
+better meet these assumptions.''
+
+source:
+\url{https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{Bivariate Plots Section}\label{bivariate-plots-section}
+
+I am going to use scatterplots to check the relationship between two
+variables.
+
+GGpairs can be useful for exploring the relationships between several
+columns of data in a data frame
+
+source:
+\url{https://stackoverflow.com/questions/45044157/how-do-you-add-jitter-to-a-scatterplot-matrix-in-ggpairs}
+
+\includegraphics{red-wine-data_files/figure-latex/Bivariate_Plots-1.pdf}
+-Also, the citric acid do have connection to pH and density.
+
+-The ones that are little bit closer to citric acid are volatile acidity
+and fixed acidity. --Meaning, they are probably in relationship.
+
+First, I need to double check by adding red line or linear regression to
+see the connection connection between two supportive variables.
+
+\paragraph{I am comparing pH and
+density.}\label{i-am-comparing-ph-and-density.}
+
+Density goes down while ph goes up\ldots{} I am surprized that they are
+look very different to each other. I expected them to have a positive
+correlation because they have normal plots. This plot goes to an
+opposite dirrection.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+Comparing ph and citric acid, it goes down.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Despite that density and Ph are both normal\ldots{}; it looks different
+to citric acid ---comparing to pH and citric acid (check my previous
+plot).
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Here is the relationship between fixed acidity and ph. It is falling
+down slightly.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+Alright, I am going to compare fixed acidity and citric.acid. They are
+SO connected to each other. Definately a positive one.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+Next, I am going to plot volatile.acid and fixed.acidity. It definately
+feels like it is going down.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+Let's see how it looks like with pH and volatile.acidity. It definiately
+looks positive because it is escalating.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Next, I am going to compare volatile.acidity and density\ldots{}It looks
+like to me there is slightly increase from this plot.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+This is how I categorized visually based on my previous plots.
+
+\subparagraph{Positive correlation: (3
+pos)}\label{positive-correlation-3-pos}
+
+density \& citric. acidity, citric \& fixed acidity, volatile. acidity
+\& pH, density \& volatile acidity.
+
+\subparagraph{Negative correlation: (4
+neg)}\label{negative-correlation-4-neg}
+
+pH \& density, pH \& citric acidity, pH \& fixed acidity,
+volatile.acidity \& fixed acidity.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+Another way to verify if they are negative or positive correlation. I am
+using a cor.test in programming.
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$pH and df$density
+## t = -14.53, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.3842835 -0.2976642
+## sample estimates:
+##        cor 
+## -0.3416993
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$pH and df$citric.acid
+## t = -25.767, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.5756337 -0.5063336
+## sample estimates:
+##        cor 
+## -0.5419041
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$pH and df$fixed.acidity
+## t = -37.366, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.7082857 -0.6559174
+## sample estimates:
+##        cor 
+## -0.6829782
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$fixed.acidity and df$volatile.acidity
+## t = -10.589, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.3013681 -0.2097433
+## sample estimates:
+##        cor 
+## -0.2561309
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$pH and df$volatile.acidity
+## t = 9.659, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.1880823 0.2807254
+## sample estimates:
+##       cor 
+## 0.2349373
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$density and df$citric.acid
+## t = 15.665, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.3216809 0.4066925
+## sample estimates:
+##       cor 
+## 0.3649472
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  df$pH and df$volatile.acidity
+## t = 9.659, df = 1597, p-value < 2.2e-16
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.1880823 0.2807254
+## sample estimates:
+##       cor 
+## 0.2349373
+\end{verbatim}
+
+Again the negative correlarion by using Pearson method in programming
+are: - ph \& density - ph \& citrict acid - ph \& fixed acidity - fixed
+acidity \& volatile-acidity
+
+The positive correlation would be: -ph \& volatile -density \& fixed
+acidity
+
+\begin{longtable}[]{@{}l@{}}
+\toprule
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+-I am going to use ggcorr as an another method to check the
+relationshipness between two variables.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-13-1.pdf}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+I guess this method is easier because you can see that the bright red
+color is indicating the strongest relationship between two
+variables.These indicate the list of strongest relationship.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+1. Free sulfur dioxide \& total sulfur dioxide\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+2. Fixed acidity \& Citric Adid\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+3. density \& fixed acidity\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+I always thought that ph and density would be in the list. Turns out
+that their relationship is not the strongest. I need to keep my eyes on
+the fixed acidity,\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\#\#\#\#\# Checking out the boxplots\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+--\textgreater{} Quality of Wine and other variables in boxplots\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This time I am going to explore the data by displaying the scatterplots.
+My main variable of my interest would be the quality of the wine. I am
+going to observe the quality of the wine along with all other variables.
+The question is what makes a red wine a good quality? or what define a
+good quality of the red wine?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-14-1.pdf}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+I am going to classify based on the previous observations.All these tiny
+dots will represent the quality of the wine and remain the same.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+1. The quality of the wine gets better if we add more alcohol.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+2. I am suprized that we need to add more sulphates to improve the
+quality of the wine.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+3. The more I add Citric acid, the better quality the wine will
+be.{[}This is the one that I need to keep my eyes on this
+variable.{]}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+4. The wine gets better with slight increase of the fixed acidity.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+5. The quality is falling down when the volatile acidity is
+increased.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+6. The quality of the wine gets better when Ph goes up.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+7. The quality of the wine degrades when density goes up.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+8. Total Sulfur dioxids lowers the quality of the wine.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+9.Residual sugar does not change the quality of the wine --no matter how
+much ammount you add sugar.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\# Bivariate Analysis\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\#\#\# Talk about some of the relationships you observed in this part of
+the\\
+\#\#investigation. How did the feature(s) of interest vary with other
+features in\\
+\#\#the dataset?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+source:
+\url{https://www.emathzone.com/tutorials/basic-statistics/positive-and-negative-correlation.html\#ixzz5OmFgYWlq}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+After observing the table, I see two similarity between density \&
+citric acid and pH \& citrict acid. They both have normal looking
+(symmetrical) plot. I have expected that these variables may have the
+strongest relationship.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+After testing each different methods by plotting the variables with red
+line, in Pearson method of finding correlation, and in spearman
+correlation method --it turns out that\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+-the fixed acidity \& density, -Free sulfur dioxide \& total sulfur
+dioxide, -and fixed acidity \& citric acid\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+have the strongest relationship.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+Therefore, my expectation is wrong.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\#\#\# Did you observe any interesting relationships between the other
+features\\
+\#\#\#(not the main feature(s) of interest)?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+I have compared the ph, density, citric.accidity, and others variables
+that might seem to be correlated to each other.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\#\#\# What was the strongest relationship you found?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The List of the strongest relationship:\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+1. Free sulfur dioxide \& total sulfur dioxide\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+2. Fixed acidity \& Citric Adid\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+3. density \& fixed acidity\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{Multivariate Plots Section}\label{multivariate-plots-section}
+
+\section{Multivariate Analysis}\label{multivariate-analysis}
+
+\subsubsection{\texorpdfstring{Talk about some of the relationships you
+observed in this part of the\\
+\#\#\#investigation. Were there features that strengthened each other in
+terms of\\
+\#\#\#looking at your feature(s) of
+interest?}{Talk about some of the relationships you observed in this part of the \#\#\#investigation. Were there features that strengthened each other in terms of \#\#\#looking at your feature(s) of interest?}}\label{talk-about-some-of-the-relationships-you-observed-in-this-part-of-the-investigation.-were-there-features-that-strengthened-each-other-in-terms-of-looking-at-your-features-of-interest}
+
+During my investigation, the variables that i have been observing would
+be density, alcohol, sulphates and quality of the wine.
+
+According to my previous investigation, I am already aware that adding
+more alcohol would improve the quality of the wine. I am going to
+attempt to correlate with density (--a slight increase of the density
+would makes the quality of the wine worse). Because I am curious. I want
+to check the relationship between the density, alcohol, and quality.
+
+We could conclude that adding less density, more alcohol could improve
+the overall the quality of the wine. There is no contradiction from the
+Bivariate examination.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+Next one looks like a positive correlation\ldots{}It means that the
+slight of the increase of the sulphites and alcohol could make better
+quality. THerefore, there is no contradiction.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+I am going to use another method and perform logistic method to check
+the numbers. This time, I decided to seperate the quality by using
+facet\_wrap because \ldots{}I am curious how it looks when the quality
+are seperated.
+
+Previously at the bivariate experimentation, the relationship between
+the sulphates and quality are considered positive. However, adding
+alcohol as a third variable change everythhing. Turns out that the
+relationship between three variables like sulphates, alcohol, and
+quality are tiny bit negative. Actually, that does not convince me that
+the sulphates is making worse. I move on.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+Previously from the bivariate experiementation with the quality and
+citric acid. The quality from 3, 4, 6, and 8 would make a huge
+contradiction. I guess I am going to use another method to re-examine
+the relationship.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+I have picked the variables the ones that had strong relationship from
+the bivariate experimentation. I choose fixed acidity, citric acid, and
+quality. These plots definately show a correlation.
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+I am going to attempt to check the linear models to make some
+prediction.
+
+source:
+\url{https://stat.ethz.ch/R-manual/R-patched/library/base/html/numeric.html}
+
+\begin{verbatim}
+## 
+## Calls:
+## m1: lm(formula = as.numeric(quality) ~ alcohol, data = df)
+## m2: lm(formula = as.numeric(quality) ~ alcohol + pH, data = df)
+## m3: lm(formula = as.numeric(quality) ~ alcohol + pH + citric.acid, 
+##     data = df)
+## m4: lm(formula = as.numeric(quality) ~ alcohol + pH + citric.acid + 
+##     volatile.acidity, data = df)
+## m5: lm(formula = as.numeric(quality) ~ alcohol + pH + citric.acid + 
+##     volatile.acidity + fixed.acidity, data = df)
+## 
+## ==========================================================================================
+##                          m1            m2            m3            m4            m5       
+## ------------------------------------------------------------------------------------------
+##   (Intercept)          -0.125         2.426***      1.232**       2.672***      1.751**   
+##                        (0.175)       (0.387)       (0.460)       (0.457)       (0.574)    
+##   alcohol               0.361***      0.386***      0.364***      0.334***      0.334***  
+##                        (0.017)       (0.017)       (0.017)       (0.017)       (0.017)    
+##   pH                                 -0.850***     -0.463**      -0.529***     -0.329*    
+##                                      (0.116)       (0.141)       (0.135)       (0.155)    
+##   citric.acid                                       0.521***     -0.180        -0.361**   
+##                                                    (0.110)       (0.121)       (0.138)    
+##   volatile.acidity                                               -1.361***     -1.409***  
+##                                                                  (0.113)       (0.114)    
+##   fixed.acidity                                                                 0.040**   
+##                                                                                (0.015)    
+## ------------------------------------------------------------------------------------------
+##   R-squared             0.227         0.252         0.262         0.324         0.327     
+##   adj. R-squared        0.226         0.251         0.261         0.322         0.325     
+##   sigma                 0.710         0.699         0.694         0.665         0.664     
+##   F                   468.267       268.888       189.108       190.704       154.539     
+##   p                     0.000         0.000         0.000         0.000         0.000     
+##   Log-likelihood    -1721.057     -1694.466     -1683.339     -1613.978     -1610.469     
+##   Deviance            805.870       779.508       768.735       704.854       701.767     
+##   AIC                3448.114      3396.931      3376.678      3239.957      3234.938     
+##   BIC                3464.245      3418.440      3403.564      3272.220      3272.578     
+##   N                  1599          1599          1599          1599          1599         
+## ==========================================================================================
+\end{verbatim}
+
+According to my observation, if I check the result of the r-square and
+intercept. I find out that alcohol + pH + citric.acid + volatile.acidity
+make a great wine quality. However, alcohol + pH + citric.acid is
+degrading. I believe that adding the citric acid is the cause of
+dimininshing the quality of the wine.
+
+\subsubsection{Were there any interesting or surprising interactions
+between
+features?}\label{were-there-any-interesting-or-surprising-interactions-between-features}
+
+Just like I was expected that the multivariate would have different
+results from univariate or bivariate examination. I am suprised that I
+find out something that contradicts from my bivariate investigation.
+Sometimes, you might remind yourself that Simpson paradox is everywhere.
+I learned my lesson that I need to further the experimentation to verify
+again the relationship in the multivariate experiment.
+
+\subsubsection{\texorpdfstring{OPTIONAL: Did you create any models with
+your dataset? Discuss the\\
+\#\#strengths and limitations of your
+model.}{OPTIONAL: Did you create any models with your dataset? Discuss the \#\#strengths and limitations of your model.}}\label{optional-did-you-create-any-models-with-your-dataset-discuss-the-strengths-and-limitations-of-your-model.}
+
+\subsection{I made a linear models to check the result in numbers
+instead of the plots. The strenght is that I find it easier to read the
+numbers on the table than plots. We know what causes the increase and
+decrease of the wine quality. The limitation of my model is that is hard
+to predict what makes bad and good quality. Also, all my p-values are
+all 0\ldots{} meaning it is harder to interpret the confident interval
+in this experimentation.(I am 0\%
+confident\ldots{})}\label{i-made-a-linear-models-to-check-the-result-in-numbers-instead-of-the-plots.-the-strenght-is-that-i-find-it-easier-to-read-the-numbers-on-the-table-than-plots.-we-know-what-causes-the-increase-and-decrease-of-the-wine-quality.-the-limitation-of-my-model-is-that-is-hard-to-predict-what-makes-bad-and-good-quality.-also-all-my-p-values-are-all-0-meaning-it-is-harder-to-interpret-the-confident-interval-in-this-experimentation.i-am-0-confident}
+
+\section{Final Plots and Summary}\label{final-plots-and-summary}
+
+Here are my three I like and find helpful to understand what makes a
+good and bad quality of the wine.
+
+\subsubsection{Plot One}\label{plot-one}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{red-wine-data_files/figure-latex/Plot_One-1.pdf}
+
+\subsubsection{Description One}\label{description-one}
+
+The main reason why I pick this plot because it helps me to observe the
+single variable histograms very quickly. I could easily categorize which
+one is a normal distribution.
+
+Again , I concluded that combining with citric acid dimish the quality
+of the wine with alcohol.
+
+There are two things we might need to re-observe is the citric acid and
+alcohol. Both have long looking negative skewed plots. I was wrong to
+pressume that the alcohol and citric acid could make the wine better
+because of their similariy.
+
+\subsubsection{Plot Two}\label{plot-two}
+
+\includegraphics{red-wine-data_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\subsubsection{Description Two}\label{description-two}
+
+The target is to check the correlation between two variables. Labeling
+with colors and numbers are really quick way to check what the
+relationships. For example, the red color indicated that the two
+variables have strong relationship.
+
+Let's rexamine the citric acid and alcohol. We could get an idea that it
+has a slight correlation of 0.1. (not too strong or low)
+
+\subsubsection{Plot Three}\label{plot-three}
+
+\begin{verbatim}
+## Warning: Transformation introduced infinite values in continuous y-axis
+
+## Warning: Transformation introduced infinite values in continuous y-axis
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 132 rows containing non-finite values (stat_smooth).
+\end{verbatim}
+
+\includegraphics{red-wine-data_files/figure-latex/Plot_Three-1.pdf}
+
+\subsubsection{Description Three}\label{description-three}
+
+I choose this one because I want to point out how citric acid , alcohol,
+and quality are very different when we examine in multivariate
+experimentation. I clearly see that the quality 6 and 7 are in slightly
+better. Overall, that does not convince me that the citric acid is
+making a better quality because most of the report from quality 3,4,5,
+and 8 indicate that the wine got worse. \# Reflection
+
+At first, I have concluded that adding more citric acid in wine would
+improve the quality of the wine. I was not sure if I should conclude
+that citric acid is one that is decreasing of the quality because
+majority of the plots with citric acid skewed positively.
+
+As I continue the research and use the linear model, my view about the
+citric acid, alcohol and quality has changed. Citric acid is definately
+diminishing the quality of the wine with alcohol.
+
+I have suspected since in the begining that there is some Simpson
+paradox moment going on during the examination. As I progress, I kept
+being skeptical about what I saw. I started to understand that I have to
+further the research from univariate, bivariate, and multivariate to
+examine the differences of the variables relationship. It is almost like
+having one child in the family can affect two parents's life. I find it
+really facinating.I would suggest to re-examine again other variables
+beside alcohol and quality in multivariate examination.
+
+To improve the research, I would love to interpret the confidence
+interval and have the numbers in the p-values. I think the research
+would be strong and convincinble if I include ``I am 95\%
+confident\ldots{}''
+
+
+\end{document}
